@@ -71,13 +71,50 @@ const Dashboard = () => {
             <div className="dashboard-section">
               <h2 className="section-title">Recent Projects</h2>
               {projects && projects.length > 0 ? (
-                <div className="items-list">
-                  {projects.slice(0, 5).map((project) => (
-                    <div key={project._id} className="item-row">
-                      <span className="item-name">{project.title}</span>
-                      <span className={`item-badge badge-${project.status.toLowerCase()}`}>
-                        {project.status}
-                      </span>
+                <div className="projects-grid">
+                  {projects.slice(0, 3).map((project) => (
+                    <div key={project._id} className="project-card">
+                      <div className="project-header">
+                        <h3 className="project-title">{project.title}</h3>
+                        <span className={`project-badge badge-${project.status?.toLowerCase() || 'active'}`}>
+                          {project.status || 'Active'}
+                        </span>
+                      </div>
+                      {project.description && (
+                        <p className="project-description">
+                          {project.description.length > 100 
+                            ? `${project.description.substring(0, 100)}...` 
+                            : project.description}
+                        </p>
+                      )}
+                      {project.client && (
+                        <div className="project-client">
+                          <span className="project-label">Client:</span>
+                          <span className="project-value">{project.client}</span>
+                        </div>
+                      )}
+                      {project.technologies && project.technologies.length > 0 && (
+                        <div className="project-technologies">
+                          {project.technologies.slice(0, 3).map((tech, index) => (
+                            <span key={index} className="tech-tag">{tech}</span>
+                          ))}
+                          {project.technologies.length > 3 && (
+                            <span className="tech-tag">+{project.technologies.length - 3}</span>
+                          )}
+                        </div>
+                      )}
+                      {project.createdAt && (
+                        <div className="project-date">
+                          <span className="project-label">Created:</span>
+                          <span className="project-value">
+                            {new Date(project.createdAt).toLocaleDateString('en-US', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric'
+                            })}
+                          </span>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
