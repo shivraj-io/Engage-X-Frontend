@@ -1,0 +1,45 @@
+import axios from 'axios';
+
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Request interceptor to add auth token
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    
+    // If sending FormData, remove Content-Type header to let axios set it automatically
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
+    }
+    
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Response interceptor to handle errors
+axiosInstance.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('authToken');
+      window.location.href = '/admin/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default axiosInstance;
