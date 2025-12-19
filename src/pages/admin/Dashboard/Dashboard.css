@@ -20,6 +20,32 @@
   color: var(--text-secondary);
 }
 
+/* Error Banner */
+.error-banner {
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 2rem;
+  color: #856404;
+}
+
+.error-banner p {
+  margin: 0.25rem 0;
+  font-size: 0.9375rem;
+}
+
+.error-banner p:first-child {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.error-detail {
+  font-size: 0.875rem;
+  margin-left: 1rem;
+  opacity: 0.8;
+}
+
 .dashboard-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

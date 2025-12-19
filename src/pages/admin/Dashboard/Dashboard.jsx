@@ -5,12 +5,13 @@ import Loader from '../../../components/common/Loader/Loader';
 import './Dashboard.css';
 
 const Dashboard = () => {
-  const { data: projects, loading: projectsLoading } = useFetch(getProjects);
-  const { data: clients, loading: clientsLoading } = useFetch(getClients);
-  const { data: contacts, loading: contactsLoading } = useFetch(getContacts);
-  const { data: subscribers, loading: subscribersLoading } = useFetch(getSubscribers);
+  const { data: projects, loading: projectsLoading, error: projectsError } = useFetch(getProjects);
+  const { data: clients, loading: clientsLoading, error: clientsError } = useFetch(getClients);
+  const { data: contacts, loading: contactsLoading, error: contactsError } = useFetch(getContacts);
+  const { data: subscribers, loading: subscribersLoading, error: subscribersError } = useFetch(getSubscribers);
 
   const loading = projectsLoading || clientsLoading || contactsLoading || subscribersLoading;
+  const hasErrors = projectsError || clientsError || contactsError || subscribersError;
 
   if (loading) {
     return (
@@ -57,6 +58,16 @@ const Dashboard = () => {
             <h1 className="dashboard-title">Dashboard</h1>
             <p className="dashboard-subtitle">Welcome to EngageX Admin Panel</p>
           </div>
+
+          {hasErrors && (
+            <div className="error-banner">
+              <p>⚠️ Unable to fetch data from the backend. Please ensure your backend API is running and deployed correctly.</p>
+              {projectsError && <p className="error-detail">Projects: {projectsError}</p>}
+              {clientsError && <p className="error-detail">Clients: {clientsError}</p>}
+              {contactsError && <p className="error-detail">Contacts: {contactsError}</p>}
+              {subscribersError && <p className="error-detail">Subscribers: {subscribersError}</p>}
+            </div>
+          )}
 
           <div className="dashboard-stats">
             {stats.map((stat, index) => (
