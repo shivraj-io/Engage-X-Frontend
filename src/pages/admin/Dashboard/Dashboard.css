@@ -46,6 +46,22 @@
   opacity: 0.8;
 }
 
+/* Info Banner */
+.info-banner {
+  background-color: #cfe2ff;
+  border: 1px solid #0d6efd;
+  border-radius: var(--radius-lg);
+  padding: 1rem 1.25rem;
+  margin-bottom: 2rem;
+  color: #084298;
+}
+
+.info-banner p {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-weight: 500;
+}
+
 .dashboard-stats {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

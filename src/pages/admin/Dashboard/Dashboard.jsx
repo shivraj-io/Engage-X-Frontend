@@ -104,16 +104,15 @@ const Dashboard = () => {
             <p className="dashboard-subtitle">Welcome to EngageX Admin Panel</p>
           </div>
 
-          {hasErrors && (
-            <div className="error-banner">
-              <p>⚠️ Unable to fetch data from the backend. Please ensure your backend API is running and deployed correctly.</p>
-              {projectsError && <p className="error-detail">Projects: {projectsError}</p>}
-              {clientsError && <p className="error-detail">Clients: {clientsError}</p>}
-              {contactsError && <p className="error-detail">Contacts: {contactsError}</p>}
-           projectsError && (
-            <div className="error-banner">
-              <p>⚠️ Backend API se projects load nahi ho rahe. Backend check karein.</p>
-              <p className="error-detail">Error: {projectsError}</p>
+          {usingMockData && (
+            <div className="info-banner">
+              <p>ℹ️ Mock/Test data display ho raha hai. Backend connect hone par real data show hoga.</p>
+            </div>
+          )}
+
+          <div className="dashboard-stats">
+            {stats.map((stat, index) => (
+              <div key={index} className="stat-card">
                 <p className="stat-label">{stat.title}</p>
                 <p className="stat-value">{stat.value}</p>
               </div>
@@ -121,77 +120,77 @@ const Dashboard = () => {
           </div>
 
           <div className="dashboard-sections">
-            <div className="dashboard-section">
-              <h2 className="section-title">Recent Projects</h2>
-              {projects && projects.length > 0 ? (
-                <div className="projects-grid">
-                  {projects.slice(0, 3).map((project) => (
-                    <div key={project._id} className="project-card">
-                      <div className="project-header">
-                        <h3 className="project-title">{project.title}</h3>
-                        <span className={`project-badge badge-${project.status?.toLowerCase() || 'active'}`}>
-                          {project.status || 'Active'}
-                        </span>
-                      </div>
-                      {project.description && (
-                        <p className="project-description">
-                          {project.description.length > 100 
-                            ? `${project.description.substring(0, 100)}...` 
-                            : project.description}
-                        </p>
-                      )}
-                      {project.client && (
-                        <div className="project-client">
-                          <span className="project-label">Client:</span>
-                          <span className="project-value">{project.client}</span>
-                        </div>
-                      )}
-                      {project.technologies && project.technologies.length > 0 && (
-                        <div className="project-technologies">
-                          {project.technologies.slice(0, 3).map((tech, index) => (
-                            <span key={index} className="tech-tag">{tech}</span>
-                          ))}
-                          {project.technologies.length > 3 && (
-                            <span className="tech-tag">+{project.technologies.length - 3}</span>
+                <div className="dashboard-section">
+                  <h2 className="section-title">Recent Projects</h2>
+                  {projects && projects.length > 0 ? (
+                    <div className="projects-grid">
+                      {projects.slice(0, 3).map((project) => (
+                        <div key={project._id} className="project-card">
+                          <div className="project-header">
+                            <h3 className="project-title">{project.title}</h3>
+                            <span className={`project-badge badge-${project.status?.toLowerCase() || 'active'}`}>
+                              {project.status || 'Active'}
+                            </span>
+                          </div>
+                          {project.description && (
+                            <p className="project-description">
+                              {project.description.length > 100
+                                ? `${project.description.substring(0, 100)}...`
+                                : project.description}
+                            </p>
+                          )}
+                          {project.client && (
+                            <div className="project-client">
+                              <span className="project-label">Client:</span>
+                              <span className="project-value">{project.client}</span>
+                            </div>
+                          )}
+                          {project.technologies && project.technologies.length > 0 && (
+                            <div className="project-technologies">
+                              {project.technologies.slice(0, 3).map((tech, index) => (
+                                <span key={index} className="tech-tag">{tech}</span>
+                              ))}
+                              {project.technologies.length > 3 && (
+                                <span className="tech-tag">+{project.technologies.length - 3}</span>
+                              )}
+                            </div>
+                          )}
+                          {project.createdAt && (
+                            <div className="project-date">
+                              <span className="project-label">Created:</span>
+                              <span className="project-value">
+                                {new Date(project.createdAt).toLocaleDateString('en-US', {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric'
+                                })}
+                              </span>
+                            </div>
                           )}
                         </div>
-                      )}
-                      {project.createdAt && (
-                        <div className="project-date">
-                          <span className="project-label">Created:</span>
-                          <span className="project-value">
-                            {new Date(project.createdAt).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'short',
-                              day: 'numeric'
-                            })}
-                          </span>
-                        </div>
-                      )}
+                      ))}
                     </div>
-                  ))}
+                  ) : (
+                    <p className="empty-message">No projects yet</p>
+                  )}
                 </div>
-              ) : (
-                <p className="empty-message">No projects yet</p>
-              )}
-            </div>
 
-            <div className="dashboard-section">
-              <h2 className="section-title">Recent Clients</h2>
-              {clients && clients.length > 0 ? (
-                <div className="items-list">
-                  {clients.slice(0, 5).map((client) => (
-                    <div key={client._id} className="item-row">
-                      <span className="item-name">{client.name}</span>
-                      <span className="item-detail">{client.company}</span>
+                <div className="dashboard-section">
+                  <h2 className="section-title">Recent Clients</h2>
+                  {clients && clients.length > 0 ? (
+                    <div className="items-list">
+                      {clients.slice(0, 5).map((client) => (
+                        <div key={client._id} className="item-row">
+                          <span className="item-name">{client.name}</span>
+                          <span className="item-detail">{client.company}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  ) : (
+                    <p className="empty-message">No clients yet</p>
+                  )}
                 </div>
-              ) : (
-                <p className="empty-message">No clients yet</p>
-              )}
-            </div>
-          </div>
+              </div>
         </div>
       </main>
     </div>
