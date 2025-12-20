@@ -56,6 +56,14 @@ const AdminLogin = () => {
 
         {error && <div className="alert alert-error">{error}</div>}
 
+        <div className="demo-credentials">
+          <p className="demo-title">Demo Credentials</p>
+          <p className="demo-info">
+            <strong>Email:</strong> admin@engagex.com<br />
+            <strong>Password:</strong> admin123
+          </p>
+        </div>
+
         <form onSubmit={handleSubmit} className="login-form">
           <div className="form-group">
             <label htmlFor="email" className="form-label">
