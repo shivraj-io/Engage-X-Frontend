@@ -4,7 +4,7 @@ import Navbar from '../../../components/common/Navbar/Navbar';
 import Loader from '../../../components/common/Loader/Loader';
 import './Dashboard.css';
 
-// Mock data for testing
+// Mock data for testing (remove when backend is ready)
 const mockProjects = [
   {
     _id: '1',
@@ -50,21 +50,13 @@ const mockContacts = [
 ];
 
 const Dashboard = () => {
+  // Fetch data from backend API
   const { data: projectsData, loading: projectsLoading, error: projectsError } = useFetch(getProjects);
   const { data: clientsData, loading: clientsLoading, error: clientsError } = useFetch(getClients);
   const { data: contactsData, loading: contactsLoading, error: contactsError } = useFetch(getContacts);
-  const { data: subscribers, loading: subscribersLoading, error: subscribersError } = useFetch(getSubscribers);
 
-  // Use mock data if API fails
-  const projects = projectsData || mockProjects;
-  const clients = clientsData || mockClients;
-  const contacts = contactsData || mockContacts;
-
-  // Only show loader if projects are still loading (main focus)
-  const loading = projectsLoading;
-  const usingMockData = !projectsData || !clientsData || !contactsData;
-
-  if (loading) {
+  // Show loader only for initial projects loading
+  if (projectsLoading && !projectsData) {
     return (
       <>
         <Navbar />
@@ -72,6 +64,13 @@ const Dashboard = () => {
       </>
     );
   }
+
+  // Use backend data if available, otherwise use mock data
+  const projects = (projectsData && projectsData.length > 0) ? projectsData : mockProjects;
+  const clients = (clientsData && clientsData.length > 0) ? clientsData : mockClients;
+  const contacts = (contactsData && contactsData.length > 0) ? contactsData : mockContacts;
+  
+  const usingMockData = !projectsData || projectsData.length === 0;
 
   const stats = [
     {
@@ -106,7 +105,7 @@ const Dashboard = () => {
 
           {usingMockData && (
             <div className="info-banner">
-              <p>ℹ️ Mock/Test data display ho raha hai. Backend connect hone par real data show hoga.</p>
+              <p>ℹ️ Demo data dikha rahe hain. Backend ready hone par real database ka data automatically show hoga.</p>
             </div>
           )}
 

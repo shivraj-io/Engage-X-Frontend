@@ -3,32 +3,22 @@ import './ClientCard.css';
 const ClientCard = ({ client }) => {
   return (
     <article className="client-card">
-      <div className="client-card-header">
-        <div className="client-avatar">
-          {client.name.charAt(0).toUpperCase()}
-        </div>
-        <div className="client-info">
-          <h3 className="client-name">{client.name}</h3>
-          <p className="client-company">{client.company}</p>
-        </div>
-      </div>
-      
-      <div className="client-details">
-        <div className="client-detail-item">
-          <span className="detail-icon">📧</span>
-          <span className="detail-text">{client.email}</span>
-        </div>
-        {client.phone && (
-          <div className="client-detail-item">
-            <span className="detail-icon">📞</span>
-            <span className="detail-text">{client.phone}</span>
+      <div className="client-logo-wrapper">
+        {client.logo ? (
+          <div className="client-logo">
+            <img src={client.logo} alt={client.name} />
+          </div>
+        ) : (
+          <div className="client-logo-placeholder">
+            {client.name.charAt(0).toUpperCase()}
           </div>
         )}
+      </div>
+      
+      <div className="client-info">
+        <h3 className="client-name">{client.name}</h3>
         {client.industry && (
-          <div className="client-detail-item">
-            <span className="detail-icon">🏢</span>
-            <span className="detail-text">{client.industry}</span>
-          </div>
+          <p className="client-industry">{client.industry}</p>
         )}
       </div>
     </article>

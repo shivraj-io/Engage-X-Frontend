@@ -3,30 +3,37 @@ import './ProjectCard.css';
 const ProjectCard = ({ project }) => {
   return (
     <article className="project-card">
-      <div className="project-card-header">
-        <h3 className="project-card-title">{project.title}</h3>
-        <span className={`project-card-status status-${project.status.toLowerCase()}`}>
-          {project.status}
-        </span>
-      </div>
-      <p className="project-card-description">{project.description}</p>
-      <div className="project-card-meta">
-        <div className="project-card-meta-item">
-          <span className="meta-label">Client:</span>
-          <span className="meta-value">{project.client}</span>
-        </div>
-        <div className="project-card-meta-item">
-          <span className="meta-label">Technology:</span>
-          <span className="meta-value">{project.technology}</span>
-        </div>
-        {project.completionDate && (
-          <div className="project-card-meta-item">
-            <span className="meta-label">Completed:</span>
-            <span className="meta-value">
-              {new Date(project.completionDate).toLocaleDateString()}
+      {project.image && (
+        <div className="project-card-image">
+          <img src={project.image} alt={project.title} />
+          <div className="project-card-overlay">
+            <span className={`project-status-badge status-${project.status?.toLowerCase() || 'active'}`}>
+              {project.status || 'Active'}
             </span>
           </div>
-        )}
+        </div>
+      )}
+      <div className="project-card-content">
+        <h3 className="project-card-title">{project.title}</h3>
+        <p className="project-card-description">{project.description}</p>
+        
+        <div className="project-card-footer">
+          <div className="project-client">
+            <span className="client-icon">👤</span>
+            <span className="client-name">{project.client}</span>
+          </div>
+          
+          {project.technologies && project.technologies.length > 0 && (
+            <div className="project-technologies">
+              {project.technologies.slice(0, 3).map((tech, index) => (
+                <span key={index} className="tech-badge">{tech}</span>
+              ))}
+              {project.technologies.length > 3 && (
+                <span className="tech-badge">+{project.technologies.length - 3}</span>
+              )}
+            </div>
+          )}
+        </div>
       </div>
     </article>
   );
